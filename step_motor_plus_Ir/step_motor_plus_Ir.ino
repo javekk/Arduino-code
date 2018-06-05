@@ -13,7 +13,7 @@ long time;
 const int IR_Sensor=12;
 int counter = 0;
 
-boolean dispence_detech = false;
+boolean dispense_detech = false;
 void setup()
 {
 Serial.begin(115200);
@@ -28,33 +28,22 @@ pinMode(IR_Sensor,INPUT);
 }
 void loop()
 {
-  while(steps_left>0){
-  currentMillis = micros();
-  if(currentMillis-last_time>=1000){
-  stepper(1); 
-  time=time+micros()-last_time;
-  last_time=micros();
-  steps_left--;
+  
+  while(!dispense_detech){
+    while(steps_left>0){
+    currentMillis = micros();
+    if(currentMillis-last_time>=1000){
+    stepper(1); 
+    time=time+micros()-last_time;
+    last_time=micros();
+    steps_left--;
+    }
+    }
+    Serial.println("Wait...!");
+    delay(1000);
+    Direction=!Direction;
+    steps_left=4095;
   }
-  }
-  Serial.println("Wait...!");
-  delay(1000);
-  Direction=!Direction;
-  steps_left=4095;
-  if(digitalRead(IR_Sensor)==HIGH){
-  
-  digitalWrite(4, HIGH);   // set the LED on
-  
-}
-
-else{
-
-  digitalWrite(4, LOW);    // set the LED off
-  
-  counter++;
-  Serial.println(counter);
-  delay(300);
-}
 }
 
 void stepper(int xw){
@@ -65,7 +54,6 @@ switch(Steps){
      digitalWrite(IN2, LOW);
      digitalWrite(IN3, LOW);
      digitalWrite(IN4, HIGH);
-     pill_dispenced();
    break; 
    case 1:
      digitalWrite(IN1, LOW); 
@@ -108,12 +96,15 @@ switch(Steps){
      digitalWrite(IN2, LOW);
      digitalWrite(IN3, LOW);
      digitalWrite(IN4, HIGH);
+     
+     pill_dispensed();
    break; 
    default:
      digitalWrite(IN1, LOW); 
      digitalWrite(IN2, LOW);
      digitalWrite(IN3, LOW);
      digitalWrite(IN4, LOW);
+     
    break; 
 }
 SetDirection();
@@ -127,7 +118,7 @@ if(Steps<0){Steps=7; }
     
 }
 
-void pill_dispenced(){
+void pill_dispensed(){
    
   
 if(digitalRead(IR_Sensor)==HIGH){
@@ -137,8 +128,10 @@ if(digitalRead(IR_Sensor)==HIGH){
 else{
   digitalWrite(4, LOW);    // set the LED off 
   counter++;
-  Serial.println(counter);
+  Serial.println(counter );
+  Serial.println(micros());
   delay(300);
+  dispense_detech = true;
 } 
   
 }
