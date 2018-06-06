@@ -589,6 +589,10 @@ void loop(){
   
                   
                   break;
+            
+            /*STATE: Away mode monitor alarms******/
+            /*Check alarms for away mode, if any**/
+            /****************************/
 
            case awayModeMonitorAlarm :
                     
@@ -631,6 +635,10 @@ void loop(){
                     }
                       
                   break;
+            
+            /*STATE: Away mode dispense pills******/
+            /*Dispense pills for alarms for away mode, if any*/
+            /****************************/
 
           case awayModeDispensePill :
 
