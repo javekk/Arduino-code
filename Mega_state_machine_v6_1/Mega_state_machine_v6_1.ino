@@ -951,6 +951,7 @@ int checkclktime(){
         lcd.print("Incorrect Time");
         lcd.setCursor(0,1);
         lcd.print("To reset press #"); 
+        lcd.clear();
         retval = E_NOTOK;           
     }
     return retval;
