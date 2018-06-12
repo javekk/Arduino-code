@@ -961,6 +961,7 @@ int checkclktime(){
 int getRealclk(){
     int retval= E_NOTOK;
     int clkflag = 1;
+    lcd.clear();
     if( dispclkflag == false){
         while(clkflag){
             char key = kpd.waitForKey(); //storing pressed key value in a char
@@ -977,7 +978,7 @@ int getRealclk(){
                     realclock[n] = ' ';
                     Serial.println(realclock);
                 }
-                else if (key != '#' && key != '*' && n!=5) {
+                else if (key != '#' && key != '*' && n!=4) {
                     lcd.print(key);
                     realclock[n] = key;
                     n++; 
