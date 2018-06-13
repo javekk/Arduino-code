@@ -438,14 +438,15 @@ void loop(){
             isEmergencyPushBtn = digitalRead(emergencyPushBtn) ;
             
             if(isEmergencyPushBtn == 1){
-              sendSMS(number, "Mindy! Incorrect dispensation of pills.");
-              
+              lcd.clear();
+              lcd.setCursor(0,0);
+              lcd.print("Sending SMS...");
+                           
+
+              sendSMS(number, "Mindy! Emergency button pressed. Check dispensation of pills.");
+               lcd.clear();
               Serial.println("digitalRead(emergencyPushBtn):  " + String(digitalRead(emergencyPushBtn)));
-              
-              
-              digitalWrite(ledPin_stck1,HIGH);
-              delay(2000);
-              digitalWrite(ledPin_stck1,LOW);
+          
             }
             
             if (isAwayModePressed==0){           
@@ -600,7 +601,9 @@ void loop(){
             /*STATE: DISPENSE PILL******/
             /*DISPENCE THE PILL*/
             /****************************/ 
-            case pillDispense :                         
+            case pillDispense :      
+
+                       
                pillDispense_status = func_pillDispense(Stacknum);
 
                  lcd.clear();
@@ -758,31 +761,30 @@ void loop(){
                     lcd.print("Away mode is ON");
 
                      if(digitalRead(emergencyPushBtn)){
-                     sendSMS(number, "Mindy! Incorrect dispensation of pills.");
-                     digitalWrite(ledPin_stck1,HIGH);
-                     delay(2000);
-                     digitalWrite(ledPin_stck1,LOW);
+                      lcd.setCursor(0,1);
+                      lcd.print("Sending SMS...");
+                      
+                      
+                     sendSMS(number, "Mindy! Emergency button pressed. Check dispensation of pills.");
+                    lcd.clear();
                      }
                    
                     if(alarmCount_Stack1!=0 && alarmCount_Stack2!=0 && count1==0 && count2 ==0){
                       Stacknum=3;
                       count1++;
                       count2++;
-
+                                                 
                         int randomVal = func_pillDispense(Stacknum);
-                            lcd.clear();
+                         
                       
                       
                     }
                      if((count1!=alarmCount_Stack1)&&(alarmCount_Stack1!=0)){
                       Stacknum=1;
-                     
+                                              
                        int randomVal= func_pillDispense(Stacknum);
-                        lcd.clear();
+                      
                           
-                          
-
-                
                       count1++;
                       
                      Serial.println("Dispense pills for the alarm Stack 1");
@@ -790,9 +792,9 @@ void loop(){
                     }
                     else if ((count2!=alarmCount_Stack2)&&(alarmCount_Stack2!=0)){
                       Stacknum=2;
-                      
+                                               
                   int randomVal= func_pillDispense(Stacknum);
-                  lcd.clear();
+                 
                      
                 
                       count2++;
@@ -803,6 +805,8 @@ void loop(){
                     else{
                       
                      process_state = awayModeDispensePill;
+                    lcd.setCursor(0,1);
+                    lcd.print("Away mode is ON ");
 
                          
                      
@@ -815,11 +819,11 @@ void loop(){
                         awayModeFlag2=false;
                        }
 
-                       key = kpd.waitForKey(); //storing pressed key value in a char                        
+                                         
                       
-                      if ((hours()>=val) || (key == '#') ){
+                      if ((hours()>=val) ){
                         
-                          awayHour = 'f';
+                         awayHour = 'f';
                          Serial.println("Away Mode is OFF now");
                          lcd.clear();
                          count1 =0;
@@ -1370,9 +1374,9 @@ else{
 
 int func_pillDispense(int Stacknum){
 
-                                               
-                         lcd.setCursor(0,1);                         
-                          lcd.print("Dispensing pills");
+                           lcd.setCursor(0,1);
+                           lcd.print("Dispensing pills");                    
+
       
   if (Stacknum == 1){
     while(!dispense_detech_stack1){
