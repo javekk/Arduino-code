@@ -1363,7 +1363,9 @@ else{
 
 int func_pillDispense(int Stacknum){
 
-  
+                                               
+                         lcd.setCursor(0,1);                         
+                          lcd.print("Dispensing pills");
       
   if (Stacknum == 1){
     while(!dispense_detech_stack1){
